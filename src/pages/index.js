@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Button, Divider } from '../components'
+import { Button, Divider } from '../ui/core'
 
 
 export default function IndexPage() {
