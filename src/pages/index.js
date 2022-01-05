@@ -4,6 +4,7 @@ import { Button, Divider } from '../ui/core'
 import { PayForm } from '../ui/components'
 import { Elements } from '@stripe/react-stripe-js'
 import { useStripeClientSecret, useStripePromise } from '../lib/stripe'
+import { getLayout } from '../layouts/main'
 
 
 
@@ -18,7 +19,7 @@ export default function IndexPage({ mercadoPagoUrl }) {
                 <div className="flex flex-col w-[592px]">
                     <h2 className="mb-6 text-2xl font-bold">Confirm and pay</h2>
                     <a href={mercadoPagoUrl}>
-                        <Button className="bg-[#01B1EA] flex justify-center items-center w-full">
+                        <Button className="bg-mercadopago flex justify-center items-center w-full">
                             Pay with{' '}
                             <span className="ml-1">
                                 <Image
@@ -91,6 +92,9 @@ export default function IndexPage({ mercadoPagoUrl }) {
     )
 }
 
+
+IndexPage.getLayout = getLayout
+
 export async function getServerSideProps() {
     const isProd = process.env.NODE_ENV === 'production'
 
@@ -110,8 +114,8 @@ export async function getServerSideProps() {
         ],
         external_reference: '00000001',
         back_urls: {
-            failure: 'http://localhost:3000/thanks/failure',
-            success: 'http://localhost:3000/thanks/success',
+            failure: 'NEXT_PUBLIC_BASE_URL/thanks/failure',
+            success: 'NEXT_PUBLIC_BASE_URL/thanks/success',
         },
         binary_mode: true,
     })
