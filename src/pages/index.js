@@ -2,9 +2,16 @@ import Image from 'next/image'
 import mercadopago from 'mercadopago'
 import { Button, Divider } from '../ui/core'
 import { PayForm } from '../ui/components'
+import { Elements } from '@stripe/react-stripe-js'
+import { useStripeClientSecret, useStripePromise } from '../lib/stripe'
+
 
 
 export default function IndexPage({ mercadoPagoUrl }) {
+    const stripeClientSecret = useStripeClientSecret()
+
+    const stripePromise = useStripePromise()
+
     return (
         <div className="flex">
             <div className="flex space-x-20 mx-auto py-32">
@@ -27,7 +34,19 @@ export default function IndexPage({ mercadoPagoUrl }) {
                         <span className="text-center bg-white px-4">Or pay with card</span>
                         <Divider className="z-[-1] absolute top-[13px]" />
                     </div>
-                    <PayForm />
+                    {stripeClientSecret && (
+                        <Elements
+                            stripe={stripePromise}
+                            options={{
+                                clientSecret: stripeClientSecret,
+                                appearance: {
+                                    theme: 'stripe',
+                                },
+                            }}
+                        >
+                            <PayForm />
+                        </Elements>
+                    )}
                 </div>
                 <div className="flex flex-col w-[491px]">
                     <Image
